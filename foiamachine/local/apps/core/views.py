@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/core/views.py

@@ -19,7 +19,7 @@ class Command(BaseCommand):
         current_site = Site.objects.get_current()
         #activation_url = current_site.domain + '/accounts/register/'
         email_subject = 'TEST FOIA Machine: The last push'
-        email_from = 'info@foiamachine.org'
+        email_from = 'info@foiamachine.info'
         parties = InterestedParty.objects.all().order_by("id")
         if len(args) > 0:
             #whitelist file location

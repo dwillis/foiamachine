@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/assets/js/message.js

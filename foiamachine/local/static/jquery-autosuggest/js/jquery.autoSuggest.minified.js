@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/static/jquery-autosuggest/js/jquery.autoSuggest.minified.js

@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/core/management/commands/view_stats.py

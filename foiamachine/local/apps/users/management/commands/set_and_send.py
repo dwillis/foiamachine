@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/users/management/commands/set_and_send.py

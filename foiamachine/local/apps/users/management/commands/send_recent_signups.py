@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/users/management/commands/send_recent_signups.py

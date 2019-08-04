@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/supporters/__init__.py

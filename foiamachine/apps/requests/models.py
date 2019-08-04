@@ -407,15 +407,25 @@ class Request(models.Model):
             address += '<div class="well"><address><div class="contact-name">%s %s</div>' % (c.first_name, c.last_name,)
             title = c.get_recent_title()
             if title:
-                 address += '<div class="contact-address">%s</div>' % (title.get_content,)
+                address += '<div class="contact-address">%s</div>' % (title.get_content,)
+            
+            self.agency = self.contacts.all()[0].get_related_agencies()[0]
+            if self.agency:
+                address += '<div class="contact-address">%s</div>' % (self.agency,)
+
             snail_mail = c.get_recent_address()
             if snail_mail:
                 address += '<div class="contact-address">%s</div>' % (snail_mail.get_content,)
+
             emails = c.get_active_emails()
             if emails:
                 emails = [email.get_email for email in emails]
                 address += '<div class="contact-email">%s</div></address>' % (','.join(emails))
-            address += '<p>Dear %s:</p></div>' % (c.first_name,)
+            if c.first_name == '' and c.last_name == '':
+                address += '<p>Dear Sir or Madam:</p></div>'
+            else:
+                address += '<p>Dear %s:</p></div>' % (c.first_name,)
+
         return address
 
     @property
@@ -426,7 +436,8 @@ class Request(models.Model):
             law_texts = []
             statutes = self.government.statutes.all() if self.government is not None else []
             for l in statutes:
-                law_texts.append('%s\'s %s (%s)' % (self.government.name, l.short_title, l.designator,))
+                law_texts.append('the %s' % (l.short_title))
+                #law_texts.append('%s\'s %s (%s)' % (self.government.name, l.short_title, l.designator,))
             #short_title, designator
             body += '<p>Pursuant to %s, I hereby request the following records:</p>' % (' and '.join(law_texts))
             #items requested
@@ -444,11 +455,12 @@ class Request(models.Model):
             #fee warning
             cost_graf = ''
             if len(statutes) > 0:
-                cost_graf = 'Under the %s the government is allowed to charge only the cost of\
-                 copying materials.' % (statutes[0].short_title,)
-            #TODO: fee waiver
-            if self.fee_waiver:
-                cost_graf += ' I am requesting that you waive all applicable fees associated with this request as I believe this request is in the public interest and is not for commercial use. Release of this information is in the public interest because it will contribute significantly to public understanding of government operations and activities. If you deny this request for a fee waiver, please advise me in advance of the estimated charges'
+                #cost_graf = 'Under the law, the government is allowed to charge only the cost of copying materials.'
+                #cost_graf = 'Under the %s the government is allowed to charge only the cost of\
+                # copying materials.' % (statutes[0].short_title,)
+
+                if self.fee_waiver:
+                    cost_graf += ' I am requesting a fee waiver because this request is made by a news organization in the public interest. Release of this information will contribute significantly to public understanding of government operations and activities. If you deny this request for a fee waiver, please advise me in advance of the estimated charges'
                 if self.max_cost == 0:
                     cost_graf += ' associated with fulfilling this request.'
                 else:
@@ -462,18 +474,20 @@ class Request(models.Model):
 
             cost_graf += ' Please send me a detailed and itemized explanation of those charges.'
             body += '<p>%s</p>' % (cost_graf,)
+            
             misc_graf = ''
             if self.prefer_electornic:
-                misc_graf += 'In the interest of expediency, and to minimize the research and/or duplication burden on your staff, please send records electronically if possible.  If this is not possible, please notify me before sending to the address listed below.'
+                misc_graf += 'I am requesting these records in their native, electronic format.  If this is not possible, please notify me before sending to the address listed below.'
             if self.phone_contact:
                 from apps.users.models import UserProfile
                 phone = UserProfile.objects.get(user=self.author).phone
-                misc_graf += ' Since time is a factor, please communicate with me by telephone or this email address. I can be reached at %s' % phone
+                misc_graf += ' I can also be reached by phone at %s.' % phone
 
             body += '<p>%s</p>' % (misc_graf,)
 
             #contact graf
-            body += '<p>Please contact me if you have any questions about my request.</p>'
+            #body += '<p>Please contact me if you have any questions about my request.</p>'
+            body += '<p>Thank you for your assistance. Please contact me if you have any questions.</p>'
         except Exception as e:
             logger.exception(e)
         return body
@@ -483,9 +497,11 @@ class Request(models.Model):
         from apps.users.models import UserProfile
         authorprofile = UserProfile.objects.get(user=self.author)
         #TODO set users phone number
-        retval = '<p>%s %s</p>' % (self.author.first_name, self.author.last_name,)
-        retval += '<p>%s<br/>%s<br/>%s<br/>%s, %s %s</p>'\
-             % (self.author.email, authorprofile.phone, authorprofile.mailing_address,  authorprofile.mailing_city, authorprofile.mailing_state, authorprofile.mailing_zip,)
+        retval = '<p>%s %s<br/>%s' % (self.author.first_name, self.author.last_name, ' ProPublica')
+        retval += '<br/>%s<br/>%s<br/><br/>%s<br/>%s, %s %s</p>'\
+              % (self.author.email, authorprofile.phone, authorprofile.mailing_address,  authorprofile.mailing_city, authorprofile.mailing_state, authorprofile.mailing_zip,)
+             # % (self.author.email, authorprofile.phone, authorprofile.mailing_address,  authorprofile.mailing_city, authorprofile.mailing_state, authorprofile.mailing_zip, authorprofile.organizations,)
+
         return retval
 
     @property

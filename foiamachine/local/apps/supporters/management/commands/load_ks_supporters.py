@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/supporters/management/commands/load_ks_supporters.py

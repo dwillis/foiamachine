@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/mail/migrations/0001_initial.py

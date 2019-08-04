@@ -14,4 +14,4 @@ Here’s what you need to know:
 
 When we announced this merger, we planned to move the FOIAMachine site you’re familiar with to a new url: classic.foiamachine.org. After speaking with users and reviewing the technical issues, we believe maintaining a temporary legacy site will only create frustration. We’re sorry for any confusion this may have caused. 
 
-If you have questions about the transition or any other issues, please email us at info@foiamachine.org.
+If you have questions about the transition or any other issues, please email us at info@foiamachine.info.

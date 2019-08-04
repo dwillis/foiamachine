@@ -19,7 +19,7 @@ class Command(BaseCommand):
         current_site = Site.objects.get_current()
         activation_url = "https://www." + current_site.domain + '/accounts/register/'
         email_subject = 'Welcome to the FOIAMachine beta test!'
-        email_from = 'info@foiamachine.org'
+        email_from = 'info@foiamachine.info'
         parties = InterestedParty.objects.filter(activation_key=None)
         if len(args) > 0:
             #whitelist file location
@@ -46,9 +46,10 @@ class Command(BaseCommand):
                 party.activation_key = akv
                 party.save()
                 email_message_link = "%s?activationcode=%s" % (activation_url, activation_key)
-                d = Context({ 'activation_link': email_message_link, 'name': party.name})
+                #d = Context({ 'activation_link': email_message_link, 'name': party.name})
+                d = Context({ 'activation_link': email_message_link})
                 text_content = plaintext.render(d)
-                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(party.email), 'info@foiamachine.org'])
+                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(party.email), 'info@foiamachine.info'])
                 msg.send()
             except Exception as e:
                 logger.exception(e)

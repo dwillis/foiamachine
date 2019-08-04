@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/assets/js/fancybox/helpers/jquery.fancybox-buttons.js

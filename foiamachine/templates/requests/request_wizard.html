@@ -122,11 +122,10 @@
     <div class="step-5 slide standard-form">
         <h1 class="headline">Review this request and make final edits</h1>
         <p class="supporting-text">
-            Double click on text for editing options.<br/>
-            Some prior steps may be disabled to prevent from accidentally overwriting your final edits.
+            Double click on text for editing options.
         </p>
         <div class="recipients-container">
-            <span class="intention">This request is intended for</span> 
+            <span class="intention">This request is intended for:</span> 
             <div class="intended-parties"></div>
         </div>
         <div contenteditable="true" id="request-edit-area" class="free-edit editable body-step" style="height: 400px;">
@@ -391,7 +390,7 @@
             }
             {% if sent_too_many %}
               this.sendButton.removeClass("active");
-              FOIMachine.utils.showUserMsg('You have exceeded your limit of {{ limit }} requests this week. If you would like us to adjust your limit, please email <a href="mailto:info@foiamachine.org">info@foiamachine.org</a>');
+              FOIMachine.utils.showUserMsg('You have exceeded your limit of {{ limit }} requests this week. If you would like us to adjust your limit, please email <a href="mailto:info@foiamachine.info">info@foiamachine.info</a>');
             {% endif %}
             {% if not is_verified %}
               //this.sendButton.removeClass("active");

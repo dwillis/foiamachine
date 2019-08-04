@@ -20,7 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         current_site = Site.objects.get_current()
         email_subject = 'FOIA Machine needs your help!'
-        email_from = 'info@foiamachine.org'
+        email_from = 'info@foiamachine.info'
         emails = ['shane.shifflett@huffingtonpost.com', 'cjones@wnyc.org']
         users = User.objects.all()
         print 'users =%s' % users.count()
@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 d = Context({ 'survey_link': email_message_link, 'name': user.first_name})
                 text_content = plaintext.render(d)
                 html_content = htmltext.render(d)
-                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(user.email), 'info@foiamachine.org'])
+                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(user.email), 'info@foiamachine.info'])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
             except Exception as e:

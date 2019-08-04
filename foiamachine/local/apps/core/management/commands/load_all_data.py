@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/core/management/commands/load_all_data.py

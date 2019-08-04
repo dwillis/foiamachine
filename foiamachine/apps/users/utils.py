@@ -14,17 +14,15 @@ def send_verification_email(user):
     "Ask a user to verify his email address"
 
     email_subject = "Verify address for FOIAMachine.org"
-    email_body = "Please click http://foiamachine.org/accounts/verify/confirm/%s/ to verify your email address" % quote(user.email)
-    email_from = 'info@foiamachine.org'
+    email_body = "Please click https://foiamachine.info/accounts/verify/confirm/%s/ to verify your email address" % quote(user.email)
+    email_from = 'info@foiamachine.info'
 
     send_mail(email_subject, email_body, email_from, [user.email], fail_silently=False)
 
 
-
-
 def send_thanks(parties):
-    email_subject = 'Thank you for registering for the FOIA Machine beta test!'
-    email_from = 'info@foiamachine.org'
+    email_subject = 'Thank you for registering for the FOIA Machine.'
+    email_from = 'info@foiamachine.info'
     plaintext = get_template('registration/email/registered_interest_response.txt')
     htmltext = get_template('registration/email/registered_interest_response.html')
     for party in parties:

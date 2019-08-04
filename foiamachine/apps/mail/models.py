@@ -18,6 +18,8 @@ from attachment import *
 from apps.requests.models import Request
 from apps.core.models import EmailAddress
 
+from bs4 import BeautifulSoup
+
 import django
 import mimetypes
 import requests
@@ -26,6 +28,9 @@ import email
 import logging
 import boto
 import re
+
+import html2text
+
 
 logger = logging.getLogger('default')
 thread_pattern = re.compile("LOOKUP:[a-zA-Z1234567890]*")
@@ -314,7 +319,22 @@ class MailBox(models.Model):
             inreply = keyvals['In-Reply-To'] if 'In-Reply-To' in keyvals.keys() else ''
             text_body = keyvals['body-plain'] if 'body-plain' in keyvals.keys() else ''
             html_body = keyvals['body-html'] if 'body-html' in keyvals.keys() else ''
+
             body = text_body if not html_body else html_body
+#            body =
+#            body.replace("\r\r","\r").replace("\n\n","\n").replace("<br><br>","<br>").replace("<p></p>","<br>").replace("\r\n\r\n","\n")
+            #body = body.replace(" ","")
+
+            #body = html2text.html2text(body)
+
+            soup = BeautifulSoup(body)
+            body = soup.get_text(separator="\n")
+            body = body.replace("\n\n\n","\n\n").replace("\n\n","\n")
+            body = body.replace("\n","<br>")
+            body = body.replace("<br><br>","<br>")
+            body = re.sub(r'^(<br>)\1+','', body)
+
+
             subject = keyvals['subject'] if 'subject' in keyvals.keys() else ''
             dt = keyvals['Date'] if 'Date' in keyvals.keys() else None
             datet = parse(dt) if dt is not None else dt

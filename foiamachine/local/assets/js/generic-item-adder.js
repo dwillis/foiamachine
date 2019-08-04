@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/assets/js/generic-item-adder.js

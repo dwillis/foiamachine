@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/static/js/ext/jquery-ui-all.js

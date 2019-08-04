@@ -49,7 +49,7 @@ class Command(BaseCommand):
                 email_message_link = "%s?activationcode=%s" % (activation_url, activation_key)
                 d = Context({ 'activation_link': email_message_link, 'name': party.name})
                 text_content = plaintext.render(d)
-                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(party.email), 'info@foiamachine.org'])
+                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(party.email), 'info@foiamachine.info'])
                 msg.send()
             except Exception as e:
                 logger.exception(e)

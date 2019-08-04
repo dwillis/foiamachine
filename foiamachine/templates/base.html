@@ -25,25 +25,7 @@
         
         {% block wrapper_css %}{% endblock %}
         
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
-        <!--[if lte IE 8]>
-        <script type="text/javascript" src="{{ STATIC_URL }}js/selectivizr-min.js"></script>
-        <![endif]-->
         
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-45900036-1', 'foiamachine.org');
-          ga('send', 'pageview');
-
-        </script>
     </head>
     
     <body class="{% block body_class %}{% endblock %}">
@@ -91,7 +73,6 @@
                                 {% endif %}
                                 <li><a href="{% url 'request_list' %}">My requests</a></li>
                                 <li><a href="{% url 'request_list_group' %}">Requests shared with me</a></li>
-                                <li><a href="{% url 'request_list_public' %}">Public requests</a></li>
                             </ul>
                         </li>
                         {% if user.is_authenticated %}
@@ -102,17 +83,11 @@
                         {% endif %}
                         {% url 'statute_list' as statute_list %}
                         <li class="{% if request.path == statute_list %}active{% endif %}"><a href="{% url 'statute_list' %}">Laws<i class="fa fa-gavel"></i></a></li>
-                        {% url 'wall_of_shame' as shame_url %}
-                        <li class="{% if request.path == shame_url %}active{% endif %}"><a href="{% url 'wall_of_shame' %}">Community<i class="icon-chat"></i></a></li>
-                        {% url 'about' as about_url %}
-                        <li class="{% if request.path == about_url %}active{% endif %}"><a href="{% url 'about' %}">About<i class="icon-info"></i></a></li>
                         {% url 'account_update' as settings_url %}
                         
                         {% if user.is_staff %}
                         <li class="{% if request.path == stats_url %}active{% endif %}"><a href="{% url 'request_stats' %}">Request Stats<i class="fa fa-bar-chart-o"></i></a></li>
                         {% endif %}
-                        {% url 'kickstarter' as kickstarter_url %}
-                        <li class="{% if request.path == kickstarter_url %}active{% endif %}"><a href="{% url 'kickstarter' %}">Kickstarted<i class="icon-heart-empty"></i></a></li>
                         <li class="aux">
                             {% if user.is_authenticated %}
                             <span class="note">Signed in as {{ user.username }}
@@ -143,20 +118,6 @@
             <div class="right-col">
                 {% block content %}
                 {% endblock %}
-                <footer class="app-footer">
-                    <div class="nfoic">
-                        <a href="http://www.nfoic.org/"><img src="{{ STATIC_URL }}img/logo-nfoic.png" align="National Freedom of Information Coalition"/></a>
-                    </div>
-                    <div class="cir">
-                        <a href="http://www.cironline.org"><img src="{{ STATIC_URL }}img/CIR_BUG_300px-alpha.png" align="Center for Investigative Reporting" width="100px"/></a>
-                    </div>
-                    <div class="rji">
-                        <a href="http://www.rjionline.org/"><img src="{{ STATIC_URL }}img/rji-60.png" align="Reynolds Journalism Institute" /></a>
-                    </div>
-                    <div class="knight">
-                        <a href="http://www.knightfoundation.org/"><img src="{{ STATIC_URL }}img/logo-knight.png" alt="Knight Foundation" /></a>
-                    </div>
-                </footer>
             </div>
         </div>
         <!-- Can't compress external (typekit) file or packed autoSuggest -->
@@ -226,10 +187,10 @@
                             }
                         }
                         if (responseText) {
-                            FOIMachine.utils.showUserMsg('An error occurred: ' +  responseText + '. If the problem persists, please contact info@foiamachine.org for assistance.');
+                            FOIMachine.utils.showUserMsg('An error occurred: ' +  responseText + '. If the problem persists, please contact info@foiamachine.info for assistance.');
                         }
                         else {
-                            FOIMachine.utils.showUserMsg('An error occurred. If the problem persists, please contact info@foiamachine.org.');
+                            FOIMachine.utils.showUserMsg('An error occurred. If the problem persists, please contact info@foiamachine.info.');
                         }
                     },
                     constructSafeUrl: function(end){

@@ -295,6 +295,11 @@ class RequestListView(ListView):
                 for tag in tags:
                     queryset = queryset.filter(tags=tag)
             
+            if form.cleaned_data['keywords']:
+            	##queryset = queryset.filter(text__search=form.cleaned_data['keywords'], title__icontains=form.cleaned_data['keywords'])
+            	queryset = queryset.filter(Q(text__search=form.cleaned_data['keywords']) | Q(title__icontains=form.cleaned_data['keywords']) | Q(free_edit_body__search=form.cleaned_data['keywords']))
+            
+          
         self.filterform = form
 
         if 'order_by' in queries:

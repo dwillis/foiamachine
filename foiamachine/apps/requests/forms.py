@@ -194,6 +194,8 @@ class FilterForm(forms.Form):
     response_required_after = forms.DateField(required=False)
     tags = forms.ModelMultipleChoiceField(queryset = Tag.objects, required = False)
 
+    keywords = forms.CharField(required=False)
+
 
 class UpdateForm(forms.Form):
     action = forms.ChoiceField(choices=(

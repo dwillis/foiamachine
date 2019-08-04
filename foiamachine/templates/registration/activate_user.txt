@@ -19,7 +19,7 @@ How it Works: https://www.foiamachine.org/how-it-works/
  
 Frequently Asked Questions: https://www.foiamachine.org/wiki/
  
-Development is ongoing. We will be adding and improving features in the coming weeks. Your feedback and use of the system is appreciated. Do not hesitate to e-mail info@foiamachine.org if you have questions.
+Development is ongoing. We will be adding and improving features in the coming weeks. Your feedback and use of the system is appreciated. Do not hesitate to e-mail info@foiamachine.info if you have questions.
  
 Thank you for being apart of this project.
  

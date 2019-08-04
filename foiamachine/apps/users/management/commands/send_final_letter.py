@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         email_subject = 'Redesign Reminder'
-        email_from = 'info@foiamachine.org'
+        email_from = 'info@foiamachine.info'
         emails = ['shane.shifflett@dowjones.com', 'coulter.jones@wsj.com']
         users = User.objects.all()
         users = users.filter(email__in=emails)
@@ -35,7 +35,7 @@ class Command(BaseCommand):
                 d = Context({ 'survey_link': email_message_link, 'name': user.first_name})
                 text_content = plaintext.render(d)
                 html_content = htmltext.render(d)
-                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(user.email), 'info@foiamachine.org'])
+                msg = EmailMultiAlternatives(email_subject, text_content, email_from, [str(user.email), 'info@foiamachine.info'])
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
             except Exception as e:

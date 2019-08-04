@@ -23,7 +23,7 @@ class RequestSending(UserTestBase):
             "notes": ["The official FOIA Machine contact, it has no phone"],
             "phone_numbers": ["999-999-9999"],
             "titles": ["Public Information Machine"],
-            "emails": ["info@foiamachine.org"],
+            "emails": ["info@foiamachine.info"],
             "addresses": ["New York, New York"],
             "agencyId": self.agency.id
         }

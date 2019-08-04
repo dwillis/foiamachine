@@ -34,6 +34,16 @@
 	          {% endif %}
 
 	      </div>
+	      
+	            
+      <div class="filterWrapper">
+         
+          <span class="filter-lbl">By search term</span>
+          {{ filterform.keywords }}
+
+      </div>  
+      
+      
 	      <input type="hidden" name="filtering" value="1" />
 	      {% if scope == "Link" %}
 	          <input type="hidden" name="code" value="{{code}}" />

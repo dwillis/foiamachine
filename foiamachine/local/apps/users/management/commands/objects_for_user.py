@@ -1,0 +1,1 @@
+/home/foiamachine/repo/foiamachine/apps/users/management/commands/objects_for_user.py

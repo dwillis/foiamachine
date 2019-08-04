@@ -54,7 +54,9 @@ def new_msg(request):
     '''
     receive a new message from mailgun and store
     '''
+
     message, inreply = MailBox.parse_message_http(request.POST)
+    
     messages = message.get_email_addresses()
     logger.debug('INCOMING: emails=%s files=%s' % (messages, request.FILES))
     for email in messages:
