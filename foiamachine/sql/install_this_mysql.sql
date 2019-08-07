@@ -1229,9 +1229,10 @@ CREATE TABLE `mail_attachment` (
   `user_id` int(11) NOT NULL,
   `file` varchar(255) NOT NULL,
   `created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `ocr_text` longtext,
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `ocr_text_fulltext` (`ocr_text`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;`
 
 --
 -- Dumping data for table `mail_attachment`
