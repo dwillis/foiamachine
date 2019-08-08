@@ -58,6 +58,8 @@
 /* line 39, ../sass/requests-detail.scss */
 .email-content {
   padding-left: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 /* line 42, ../sass/requests-detail.scss */

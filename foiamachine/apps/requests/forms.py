@@ -195,6 +195,7 @@ class FilterForm(forms.Form):
     tags = forms.ModelMultipleChoiceField(queryset = Tag.objects, required = False)
 
     keywords = forms.CharField(required=False)
+    keywords_attachment = forms.CharField(required=False)
 
 
 class UpdateForm(forms.Form):

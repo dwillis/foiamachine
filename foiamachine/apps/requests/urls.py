@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     url(r'embed/$', direct_to_template, {'template' : 'requests/embed_generator.html'}, name="embed_generator"),
     url(r'add-support/(?P<pk>.+)/user/(?P<user_id>.+)$', request_add_support, name="request_add_support"),
     url(r'(?P<pk>.+)/$', RequestDetailView.as_view(), name="request_detail"),
+    url(r'attachments/$',login_required(UserRequestListView.as_view()), name="attachment_search"),
+
 
     #original hackday urls
     #url(r'new-backbone/', direct_to_template, {'template': 'requests/backbone.html'}, name='request_new_backbone'),

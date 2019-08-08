@@ -56,6 +56,7 @@ urlpatterns = patterns('',
     url(r'^accounts/verify/confirm/(?P<email>.+)/$', VerifyConfirmView),
     url(r'^accounts/', include('registration.backends.simple.urls')),
 
+
     # Groups
 
     url(r'^groups/', groups_view, name="manage_groups"),
@@ -72,6 +73,7 @@ urlpatterns = patterns('',
     (r'^agencies/', include('apps.agency.urls')),
     (r'^docs/', include('apps.doccloud.urls')),
     (r'^mail/', include('apps.mail.urls')),
+    (r'^attachments/', include('apps.attachments.urls')),
 
     # Temp placeholder URLs
     url(r'^community/', direct_to_template, {'template': 'shame.html'}, name='wall_of_shame'),

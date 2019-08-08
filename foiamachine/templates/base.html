@@ -77,6 +77,7 @@
                         </li>
                         {% if user.is_authenticated %}
                         {% url 'agency_list' as agency_list %}
+			<li class="{% if request.path == request_list %}active{% endif %}"><a href="{% url 'attachment_list' %}">File Search<i class="icon-doc-text"></i></a></li>
                         <li class="{% if request.path == agency_list %}active{% endif %}"><a href="{% url 'agency_list' %}">Contacts<i class="fa fa-phone"></i></a></li>
                         <li class="{% if request.path == manage_groups_url %}active{% endif %}"><a href="{% url 'manage_groups' %}">My Groups<i class="fa fa-users"></i></a></li>
                         <li class="{% if request.path == settings_url %}active{% endif %}"><a href="{% url 'account_update' %}">My Settings<i class="icon-user"></i></a></li>

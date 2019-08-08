@@ -28,7 +28,6 @@ import email
 import logging
 import boto
 import re
-
 import html2text
 
 
@@ -321,18 +320,16 @@ class MailBox(models.Model):
             html_body = keyvals['body-html'] if 'body-html' in keyvals.keys() else ''
 
             body = text_body if not html_body else html_body
-#            body =
-#            body.replace("\r\r","\r").replace("\n\n","\n").replace("<br><br>","<br>").replace("<p></p>","<br>").replace("\r\n\r\n","\n")
-            #body = body.replace(" ","")
 
-            #body = html2text.html2text(body)
-
-            soup = BeautifulSoup(body)
-            body = soup.get_text(separator="\n")
-            body = body.replace("\n\n\n","\n\n").replace("\n\n","\n")
-            body = body.replace("\n","<br>")
-            body = body.replace("<br><br>","<br>")
-            body = re.sub(r'^(<br>)\1+','', body)
+            body = body.replace("<br>","<BR>")
+            body = re.sub(r'<BR>(\&gt\;)+<BR>','', body)
+            body = html2text.html2text(body)
+            body = body.replace("\n","<BR>")
+            body = body.replace("<br>","<BR>")
+            body = re.sub(r'<BR>\s{0,}<BR>\s{0,}<BR>','<BR><BR>', body)
+            body = re.sub(r'<br>(\&gt\;)+<br>','<BR><BR>', body)
+            body = re.sub(r'<BR><BR>','<BR>', body)
+            body = re.sub(r'<br><br>','<BR>', body)
 
 
             subject = keyvals['subject'] if 'subject' in keyvals.keys() else ''

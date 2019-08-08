@@ -17,6 +17,7 @@ from apps.government.models import Government
 from apps.mail.attachment import Attachment
 from apps.requests.templatetags.filter_tags import excludeHiddenTags
 
+
 from taggit.managers import TaggableManager
 from guardian.shortcuts import assign, remove_perm,\
     get_objects_for_user, get_objects_for_group,\

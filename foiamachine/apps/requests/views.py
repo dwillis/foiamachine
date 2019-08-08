@@ -28,6 +28,10 @@ from apps.requests.forms import PubPrivateForm,\
     init_pubprivate, init_gov, init_topic_agency,\
     init_datesfrom, init_requestbody, init_finalsteps, init_preview
 
+
+#from apps.requests.models import Attachment
+
+
 from apps.users.forms import InterestedPartyForm
 from apps.users.models import UserProfile, InterestedParty, get_non_user_groups
 
@@ -38,6 +42,11 @@ from itertools import chain
 import pytz
 import re
 import logging
+
+
+from django.db import connection
+connection.queries
+
 
 logger = logging.getLogger('default')
 register = django.template.Library()
@@ -296,10 +305,22 @@ class RequestListView(ListView):
                     queryset = queryset.filter(tags=tag)
             
             if form.cleaned_data['keywords']:
-            	##queryset = queryset.filter(text__search=form.cleaned_data['keywords'], title__icontains=form.cleaned_data['keywords'])
             	queryset = queryset.filter(Q(text__search=form.cleaned_data['keywords']) | Q(title__icontains=form.cleaned_data['keywords']) | Q(free_edit_body__search=form.cleaned_data['keywords']))
             
-          
+            if form.cleaned_data['keywords_attachment']:
+                queryset = queryset.filter(Q(title__icontains=form.cleaned_data['keywords_attachment']))
+        	
+        	
+        	#qs = Model.objects.filter(name='test')
+
+
+
+            # if form.cleaned_data['keywords_attachment']:
+            #    ids = form.cleaned_data['keywords_attachment']
+            #    for id in ids:
+            #        queryset = queryset.filter(attachments__id=id)
+                    
+                    
         self.filterform = form
 
         if 'order_by' in queries:
@@ -328,6 +349,12 @@ class RequestListView(ListView):
 
 
         return context
+
+class LinkUserAttachmentView(RequestListView):
+    context_object_name = 'attachments'
+    template_name = 'requests/attachment_search.html'
+
+
 
 
 class LinkUserRequestListView(RequestListView):
