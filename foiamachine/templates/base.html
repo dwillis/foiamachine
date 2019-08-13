@@ -57,6 +57,8 @@
                 </div>
                 <nav class="main-nav">
                     <ul>
+                        {% if user.is_authenticated %}
+
                         {% url 'request_new' as nr_url %}
                         {% url 'request_list' as rl_url %}
                         {% url 'request_list_public' as rlp_url %}
@@ -75,13 +77,11 @@
                                 <li><a href="{% url 'request_list_group' %}">Requests shared with me</a></li>
                             </ul>
                         </li>
-                        {% if user.is_authenticated %}
                         {% url 'agency_list' as agency_list %}
 			<li class="{% if request.path == request_list %}active{% endif %}"><a href="{% url 'attachment_list' %}">File Search<i class="icon-doc-text"></i></a></li>
                         <li class="{% if request.path == agency_list %}active{% endif %}"><a href="{% url 'agency_list' %}">Contacts<i class="fa fa-phone"></i></a></li>
                         <li class="{% if request.path == manage_groups_url %}active{% endif %}"><a href="{% url 'manage_groups' %}">My Groups<i class="fa fa-users"></i></a></li>
                         <li class="{% if request.path == settings_url %}active{% endif %}"><a href="{% url 'account_update' %}">My Settings<i class="icon-user"></i></a></li>
-                        {% endif %}
                         {% url 'statute_list' as statute_list %}
                         <li class="{% if request.path == statute_list %}active{% endif %}"><a href="{% url 'statute_list' %}">Laws<i class="fa fa-gavel"></i></a></li>
                         {% url 'account_update' as settings_url %}
@@ -89,6 +89,12 @@
                         {% if user.is_staff %}
                         <li class="{% if request.path == stats_url %}active{% endif %}"><a href="{% url 'request_stats' %}">Request Stats<i class="fa fa-bar-chart-o"></i></a></li>
                         {% endif %}
+
+                        {% endif %}
+
+                        {% url 'about' as about_url %}
+                        <li class="{% if request.path == about_url %}active{% endif %}"><a href="{% url 'about' %}">About<i class="icon-info"></i></a></li>
+
                         <li class="aux">
                             {% if user.is_authenticated %}
                             <span class="note">Signed in as {{ user.username }}
