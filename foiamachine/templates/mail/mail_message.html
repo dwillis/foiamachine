@@ -38,7 +38,7 @@
             <div class="attachments">
                 {% for attachment in mail_message.attachments.all %}
                     {% if can_view %}
-                    <a class="attachment" href="{{attachment.file.url}}"><i class="fa fa-cloud-download"></i> {{attachment.get_filename}}</a>
+		    <a class="attachment" href="{{attachment.file.url}}"><i class="fa fa-cloud-download"></i> {{attachment.get_filename}}</a><br>
                     {% endif %}
                 {%endfor%} 
             </div>
