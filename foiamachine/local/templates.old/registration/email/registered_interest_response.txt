@@ -1,1 +1,0 @@
-/home/foiamachine/repo/foiamachine/templates/registration/email/registered_interest_response.txt
