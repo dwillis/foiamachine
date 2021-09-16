@@ -14,7 +14,7 @@ def content_file_name(instance, filename):
 
 class Attachment(models.Model):
     from django.contrib.auth.models import User
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     file = models.FileField(upload_to=content_file_name, max_length=255)
     created = models.DateTimeField(auto_now_add=True)
 

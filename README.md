@@ -1,4 +1,4 @@
-This is jgillum's attempt to build upon FOIA Machine!
+      This is jgillum's attempt to build upon FOIA Machine!
 
 FOIAMachine is an open source project to send, organize and share requests for government data and documents. It will help you generate a request and has a crowdsourced database of federal, state and local agencies. You can sign up for a free account at [foiamachine.org](https://foiamachine.org). Please email any questions to info at foiamachine dot org or reach out to us on Twitter @FOIAMachine.
 
@@ -74,7 +74,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Shane Shifflett 
+Copyright (c) 2014 Shane Shifflett
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

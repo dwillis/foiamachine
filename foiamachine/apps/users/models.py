@@ -40,7 +40,7 @@ class InterestedParty(models.Model):
     email = models.EmailField(unique=True)
     created = models.DateTimeField(auto_now_add=True)
     activated_on = models.DateTimeField(blank=True, null=True)
-    activation_key = models.ForeignKey(ActivationKeyValue, blank=True, null=True)
+    activation_key = models.ForeignKey(ActivationKeyValue, blank=True, null=True, on_delete=models.DO_NOTHING)
     interested_in = models.CharField(max_length=3, choices=INTEREST_CHOICES)
     followed_request = models.ManyToManyField(Request, blank=True, null=True,)
 
@@ -78,7 +78,7 @@ class Organization(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
     mailing_address = models.CharField(max_length=150, blank=True)
     mailing_city = models.CharField(max_length=50, blank=True)
     mailing_state = models.CharField(max_length=20, blank=True)
@@ -170,7 +170,7 @@ def add_user_to_public_group(sender, **kwargs):
                 up.save()
         group, created = Group.objects.get_or_create(name='public')
         obj.groups.add(group)
-        my_group, created = Group.objects.get_or_create(name=obj.username) 
+        my_group, created = Group.objects.get_or_create(name=obj.username)
         obj.groups.add(my_group)
         assign_perm(UserProfile.get_permission_name('edit'), obj, my_group)
         logger.info('user %s added to public' % obj.username)
@@ -181,7 +181,7 @@ def send_thanks_for_registering(sender, **kwargs):
     obj = kwargs['instance']
     created = kwargs['created']
     if created and not settings.DEBUG:
-        try: 
+        try:
             from apps.users.utils import send_thanks
             send_thanks([obj])
         except Exception as e:

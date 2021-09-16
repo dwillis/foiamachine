@@ -1,5 +1,5 @@
 from django.db.models import Count, Avg
-from django.contrib.formtools.wizard.views import SessionWizardView
+from formtools.wizard.views import SessionWizardView
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -151,7 +151,7 @@ def overall_stats(request):
         context['avg_lifetime'] = -1
     if context['avg_days_outstanding'] is None:
         context['avg_days_outstanding'] = -1
-    
+
     return render_to_response('requests/overall_stats.json', context, context_instance=RequestContext(request))
 
 def disallow_sunset(request, pk=None, template='requests/request_detail.html'):
@@ -216,7 +216,7 @@ def send_request(request, pk=None):
         return render_to_response('users/confirm_email.html', {'nthisweek' : nthisweek, 'limit'  : up.requests_per_week}, context_instance=RequestContext(request))
     if nthisweek >= up.requests_per_week:
         return render_to_response('requests/send_limit.html', {'nthisweek' : nthisweek, 'limit'  : up.requests_per_week}, context_instance=RequestContext(request))
-    
+
     if not obj.sent:
         #if len(obj.get_contacts_with_email):
             #set the final version of the printed request
@@ -230,7 +230,7 @@ class RequestListView(ListView):
 
 
     def post(self, request, *args, **kwargs):
-        """ 
+        """
         Lets user edit settings on posts
         """
 
@@ -239,7 +239,7 @@ class RequestListView(ListView):
 
         if not form.is_valid():
             return render_to_response('403.html', {}, context_instance=RequestContext(request))
-            
+
         requests_to_modify = form.cleaned_data['requests_to_modify']
         action = form.cleaned_data['action']
 
@@ -247,7 +247,7 @@ class RequestListView(ListView):
         for obj in requests_to_modify:
             can_edit = user.has_perm(Request.get_permission_name('edit'), obj)
             if not can_edit:
-                # Chicanery? 
+                # Chicanery?
                 return render_to_response('403.html', {}, context_instance=RequestContext(request))
 
             if action == "Make Public":
@@ -303,14 +303,14 @@ class RequestListView(ListView):
                 tags = form.cleaned_data['tags']
                 for tag in tags:
                     queryset = queryset.filter(tags=tag)
-            
+
             if form.cleaned_data['keywords']:
             	queryset = queryset.filter(Q(text__search=form.cleaned_data['keywords']) | Q(title__icontains=form.cleaned_data['keywords']) | Q(free_edit_body__search=form.cleaned_data['keywords']))
-            
+
             if form.cleaned_data['keywords_attachment']:
                 queryset = queryset.filter(Q(title__icontains=form.cleaned_data['keywords_attachment']))
-        	
-        	
+
+
         	#qs = Model.objects.filter(name='test')
 
 
@@ -319,8 +319,8 @@ class RequestListView(ListView):
             #    ids = form.cleaned_data['keywords_attachment']
             #    for id in ids:
             #        queryset = queryset.filter(attachments__id=id)
-                    
-                    
+
+
         self.filterform = form
 
         if 'order_by' in queries:
@@ -362,7 +362,7 @@ class LinkUserRequestListView(RequestListView):
     template_name = 'requests/request_list.html'
 
     def get_queryset(self):
-        try: 
+        try:
             code = self.request.GET['code']
             self.vl = vl = ViewableLink.objects.get(code=code)
             user = vl.owner
@@ -555,7 +555,7 @@ class RequestDetailView(DetailView):
         for obj in requests_to_modify:
             can_edit = user.has_perm(Request.get_permission_name('edit'), obj)
             if not can_edit:
-                # Chicanery? 
+                # Chicanery?
                 return render_to_response('403.html', {}, context_instance=RequestContext(request))
             if form.cleaned_data['newduedate']:
                 obj.due_date = form.cleaned_data['newduedate']
@@ -595,9 +595,9 @@ class RequestDetailView(DetailView):
                 obj.private = True
 
             obj.save()
-            
+
         return self.get(request, *args, **kwargs)
-        
+
 
     def get_queryset(self):
         if self.request.user.is_authenticated and self.request.user.username != '':

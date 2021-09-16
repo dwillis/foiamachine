@@ -18,7 +18,7 @@ class Language(BaseData):
 
     def __unicode__(self):
         return self.name
-        
+
 class AdminName(BaseData):
     name = models.CharField(max_length=255)
     name_plural = models.CharField(max_length=255, blank=True, null=True)
@@ -27,7 +27,7 @@ class AdminName(BaseData):
         return self.name
 
 class Update(BaseData):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     pubbed = models.DateTimeField(null=True)
     headline = models.CharField(max_length=1024, default="The latest")
     text = models.TextField()
@@ -76,12 +76,12 @@ class FeeExemptionOther(BaseData):
 class Nation(BaseData):
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from=('name', ), overwrite=False)
-    primary_language = models.ForeignKey(Language, related_name='primary_language_nations', blank=True, null=True)
+    primary_language = models.ForeignKey(Language, related_name='primary_language_nations', blank=True, null=True, on_delete=models.DO_NOTHING)
     foi_languages = models.ManyToManyField(Language, blank=True, null=True)
-    admin_0_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_0_nations')
-    admin_1_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_1_nations')
-    admin_2_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_2_nations')
-    admin_3_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_3_nations')
+    admin_0_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_0_nations', on_delete=models.DO_NOTHING)
+    admin_1_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_1_nations', on_delete=models.DO_NOTHING)
+    admin_2_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_2_nations', on_delete=models.DO_NOTHING)
+    admin_3_name = models.ForeignKey(AdminName, null=True, blank=True, related_name='admin_3_nations', on_delete=models.DO_NOTHING)
 
 
     class Meta:
@@ -110,7 +110,7 @@ class Statute(BaseData):
     #deleted = models.BooleanField(default = False)
     objects = StatuteManager()
 
-    
+
     class Meta:
         verbose_name_plural = 'Statutes'
 
@@ -137,7 +137,7 @@ class Statute(BaseData):
     def get_text(self):
         return escape(self.text.trim())
 
-    @property 
+    @property
     def get_days_till_due(self):
         if self.days_till_due < 0:
             return None
@@ -164,12 +164,12 @@ class Government(BaseData):
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from=('name', ), overwrite=False)
     level = models.CharField(max_length=1, choices=GOV_LEVELS)
-    nation = models.ForeignKey(Nation, null=True, blank=True)
+    nation = models.ForeignKey(Nation, null=True, blank=True, on_delete=models.DO_NOTHING)
     statutes = models.ManyToManyField(Statute, null=True, blank=True, related_name='related_statutes')
     #deleted = models.BooleanField(default = False)
     holidays = models.ManyToManyField(Holiday, null=True, blank=True)
     objects = GovernmentManager()
-    
+
 
     class Meta:
         verbose_name_plural = 'Governments'
@@ -222,4 +222,3 @@ class Government(BaseData):
             'county': 2,
             'city': 3
         }
-

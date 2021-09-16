@@ -10,10 +10,10 @@ from werkzeug.datastructures import MultiDict
 from time import mktime
 import simplejson as json
 from datetime import datetime
-from StringIO import StringIO
+from io import StringIO
 from email.utils import parseaddr, parsedate
 from dateutil.parser import parse
-from attachment import *
+from .attachment import *
 
 from apps.requests.models import Request
 from apps.core.models import EmailAddress
@@ -61,7 +61,7 @@ class MailMessage(models.Model):
     body = models.TextField(blank=True, null=True)
     subject = models.CharField(max_length=1024)
     attachments = models.ManyToManyField(Attachment, blank=True, null=True, related_name='message_attachments')
-    request = models.ForeignKey(Request, blank=True, null=True)
+    request = models.ForeignKey(Request, blank=True, null=True, on_delete=models.DO_NOTHING)
     replies = models.ManyToManyField("self", null=True, blank=True, related_name='prior_thread')
     #if it is a reply, then time it was received by mail server otherwise NOW
     dated = models.DateTimeField(null=True, blank=True)
@@ -177,7 +177,7 @@ class MailMessage(models.Model):
 
 
 class MailBox(models.Model):
-    usr = models.ForeignKey(django.contrib.auth.models.User)
+    usr = models.ForeignKey(django.contrib.auth.models.User, on_delete=models.DO_NOTHING)
     messages = models.ManyToManyField(MailMessage, blank=True, null=True, related_name='mailbox_messages')
     created = models.DateTimeField(auto_now_add=True)
     provisioned_email = models.EmailField(blank=True, null=True)
@@ -408,7 +408,7 @@ class MailBox(models.Model):
                     self.lookup_thread(mail_msg)
                 else:
                     if thread.request is not None:
-                        thread = MailMessage.objects.filter(request__id=thread.request.id).order_by('dated')[0] 
+                        thread = MailMessage.objects.filter(request__id=thread.request.id).order_by('dated')[0]
                     thread.replies.add(mail_msg)
                     #mail_msg.request = thread.request
                     mail_msg.save()
@@ -450,7 +450,7 @@ class MailBox(models.Model):
                         thread.add_references(mail_msg.references.all())
                     else:#message was never sent
                         mail_msg.request = req
-                    mail_msg.save() 
+                    mail_msg.save()
         return mail_msg
 
     def parse_attachments_poptres(self, content_disposition, part):

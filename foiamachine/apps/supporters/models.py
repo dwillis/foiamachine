@@ -28,7 +28,7 @@ class SupporterManager(models.Manager):
 class Supporter(models.Model):
     kickstarter_id = models.IntegerField(null=True, blank=True)
     name = models.CharField(max_length=255, blank=True)
-    support_level = models.ForeignKey(SupportLevel, null=True, blank=True)
+    support_level = models.ForeignKey(SupportLevel, null=True, blank=True, on_delete=models.DO_NOTHING)
     active = models.BooleanField(default=True)
 
     objects = SupporterManager()

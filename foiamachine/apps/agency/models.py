@@ -18,10 +18,10 @@ class AgencyManager(models.Manager):
 class Agency(BaseData):
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from=('name', ), overwrite=False)
-    government = models.ForeignKey(Government)
+    government = models.ForeignKey(Government, on_delete=models.DO_NOTHING)
     contacts = models.ManyToManyField(Contact, blank=True, null=True, related_name='agency_related_contacts')
     objects = AgencyManager()
-    creator = models.ForeignKey(User, null = True)
+    creator = models.ForeignKey(User, null = True, on_delete=models.DO_NOTHING)
     hidden = models.BooleanField(default =  False)
     pub_contact_cnt = models.IntegerField(default=0)
     editor_contact_cnt = models.IntegerField(default=0)
@@ -54,7 +54,7 @@ class Agency(BaseData):
         days_late = 0
         for r in self.related_agencies.all():
             days_late += r.time_outstanding
-        return days_late 
+        return days_late
 
     def save(self, *args, **kw):
         if self.pk is not None:

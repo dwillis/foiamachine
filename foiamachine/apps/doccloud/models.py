@@ -57,7 +57,7 @@ def put_file(file, title, access_level):
 def rm_file(id):
     try:
         get_dc_file(id).delete()
-    except Exception as e: 
+    except Exception as e:
         return False
 
 class DocumentCloudProperties(models.Model):
@@ -80,7 +80,7 @@ class DocumentCloudProperties(models.Model):
     def update_access(self, access):
         if self.dc_id == None and self.dc_url == None:
             return False #obj not set yet
-        try: 
+        try:
             dc_obj = get_dc_file(self.dc_id)
             dc_obj.access = access
             dc_obj.save()
@@ -89,7 +89,7 @@ class DocumentCloudProperties(models.Model):
 
     def delete(self, *args, **kwargs):
         #no effective way of dealing with errors on DC cloud side
-        #unless we create a custom template for managing documents 
+        #unless we create a custom template for managing documents
         rm_file(self.dc_id)
         #so if rm_file don't complete we orphan the dc cloud doc
         super(DocumentCloudProperties, self).delete(*args, **kwargs)
@@ -102,12 +102,12 @@ class Document(models.Model):
     """
     file = models.FileField(upload_to=settings.DOCUMENTS_PATH, max_length=255)
     slug = AutoSlugField(populate_from=('title',))
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     created_at = CreationDateTimeField(db_index=True)
     updated_at = models.DateTimeField(editable=False, blank=True, db_index=True)
-    dc_properties = models.ForeignKey(DocumentCloudProperties, blank=True, null=True)
+    dc_properties = models.ForeignKey(DocumentCloudProperties, blank=True, null=True, on_delete=models.DO_NOTHING)
     access_level = models.CharField(max_length=32, choices=PRIVACY_LVLS)
 
     class Meta:

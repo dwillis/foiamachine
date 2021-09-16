@@ -12,7 +12,7 @@ logger = logging.getLogger('default')
 
 class Title(BaseData):
     content = models.CharField(max_length=255, blank=True)
-    
+
     @property
     def get_content(self):
         return self.content
@@ -25,13 +25,13 @@ class Phone(BaseData):
     not using localflavors bc it's deprecated
     TODO dwell on how to handle this
     thought was I could use charfield of 15 digis
-    but no consistent extension formatting appears in our data 
+    but no consistent extension formatting appears in our data
     and some cells have multiple numbers comma delimited
     but extensions are also comma delimited
 
     if we are printing out the number for someone else to call
     we just need to print out the string and ask them if it was
-    right, that's probably better than enforcing 
+    right, that's probably better than enforcing
     '''
     content = models.CharField(max_length=512)
 
@@ -60,12 +60,12 @@ class Note(BaseData):
     let a user leave a note on an contact
     '''
     content = models.TextField()
-    user = models.ForeignKey(User, null=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.DO_NOTHING)
 
     @property
     def get_content(self):
         return self.content
-        
+
     def __unicode__(self):
         return self.content
 
@@ -89,7 +89,7 @@ class Contact(BaseData):
     emails = models.ManyToManyField(EmailAddress, blank=True, null=True)
     phone_numbers = models.ManyToManyField(Phone, blank=True, null=True)
     addresses = models.ManyToManyField(Address, blank=True, null=True)
-    creator = models.ForeignKey(User, null=True)
+    creator = models.ForeignKey(User, null=True, on_delete=models.DO_NOTHING)
     hidden = models.BooleanField(default=False)
     objects = ContactsManager()
 
@@ -189,4 +189,4 @@ class Contact(BaseData):
             return self.addresses.filter(deprecated=None).order_by('-created')[0]
         except Exception as e:
             logger.info(e)
-            return '' 
+            return ''

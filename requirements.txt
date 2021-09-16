@@ -25,7 +25,7 @@ django-registration==0.8
 django-s3-folder-storage
 django-storages==1.1.6
 django-taggit==0.9.3
--e hg+https://bitbucket.org/fabian/django-taggit-autosuggest@ce0382212840c05fd98a12782ea636051fdd04e6#egg=django_taggit_autosuggest-tip
+-e git+https://github.com/iarp/django-taggit-autosuggest.git#egg=django-taggit-autosuggest
 django-tastypie==0.9.12
 greenlet==0.3.4
 gunicorn==0.13.4
@@ -42,11 +42,9 @@ requests==1.1.0
 simplejson==3.1.0
 six==1.4.1
 ssh==1.7.13
-wsgiref==0.1.2
 pytz==2013.7
 xlrd==0.9.0
 pylibmc==1.2.3
-MySQL-python==1.2.5
 django-sslify==0.2
 workdays==1.2
 django-bleach==0.1.5

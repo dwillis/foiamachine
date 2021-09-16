@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.base import ContentFile
 from django.contrib.auth.models import User, Group
 from django_extensions.db.fields import AutoSlugField
@@ -130,17 +130,17 @@ NOTIFICATION_TYPES = (
 )
 
 class Request(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=255, blank=True)
     status = models.CharField(max_length=1, choices=request_statuses,)
-    government = models.ForeignKey(Government, null=True, blank=True)
-    agency = models.ForeignKey(Agency, blank=True, null=True)
+    government = models.ForeignKey(Government, null=True, blank=True, on_delete=models.DO_NOTHING)
+    agency = models.ForeignKey(Agency, blank=True, null=True, on_delete=models.DO_NOTHING)
     documents = models.ManyToManyField(Document, blank=True, null=True, related_name='related_docs')
     contacts = models.ManyToManyField(Contact, blank=True, null=True, related_name='related_contacts')
     text = models.TextField(u'Request text', blank=True)
     free_edit_body = models.TextField(u'Request text', blank=True)
     attachments = models.ManyToManyField(Attachment, blank=True, null=True)
-    printed = models.ForeignKey(Attachment, blank=True, null=True, related_name='printed_request')
+    printed = models.ForeignKey(Attachment, blank=True, null=True, related_name='printed_request', on_delete=models.DO_NOTHING)
     private = models.BooleanField('Mark this request as private', default=True)
     supporters = models.ManyToManyField(User, blank=True, null=True, related_name='supporter')
     slug = AutoSlugField(populate_from=('title', ), overwrite=False, blank=True)
@@ -409,7 +409,7 @@ class Request(models.Model):
             title = c.get_recent_title()
             if title:
                 address += '<div class="contact-address">%s</div>' % (title.get_content,)
-            
+
             self.agency = self.contacts.all()[0].get_related_agencies()[0]
             if self.agency:
                 address += '<div class="contact-address">%s</div>' % (self.agency,)
@@ -475,7 +475,7 @@ class Request(models.Model):
 
             cost_graf += ' Please send me a detailed and itemized explanation of those charges.'
             body += '<p>%s</p>' % (cost_graf,)
-            
+
             misc_graf = ''
             if self.prefer_electornic:
                 misc_graf += 'I am requesting these records in their native, electronic format.  If this is not possible, please notify me before sending to the address listed below.'
@@ -539,7 +539,7 @@ class Request(models.Model):
             return attachment.url
         except Exception as e:
             logger.exception(e)
-            return None 
+            return None
 
     def send(self, attachments=[]):
         if self.sent:
@@ -581,7 +581,7 @@ class Request(models.Model):
             return True
         except Exception as e:
             logger.exception(e)
-            return False 
+            return False
 
     @property
     def privacy_status(self):
@@ -619,7 +619,7 @@ class Request(models.Model):
     def is_late_naive(self):
         """
         Naive representation of whether a response is late. Will
-        want to redo this with more 
+        want to redo this with more
         """
         is_late = False
         if self.latest_deadline: # AHHHH HACK CITY!!!
@@ -628,9 +628,8 @@ class Request(models.Model):
         return is_late
 
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('request_detail', (), {'pk': self.pk})
+        return reverse('request_detail', (), {'pk': self.pk})
 
     def save(self, *args, **kw):
         #TODO: abort save if sent
@@ -707,15 +706,15 @@ class Request(models.Model):
         return Request.objects.filter(private=True, scheduled_send_date__lte=now, keep_private=False)
 
 class ViewableLink(models.Model):
-    owner = models.ForeignKey(User, null=True)
-    request = models.ForeignKey(Request, blank = True, null = True)
+    owner = models.ForeignKey(User, null=True, on_delete=models.DO_NOTHING)
+    request = models.ForeignKey(Request, blank = True, null = True, on_delete=models.DO_NOTHING)
     tags = TaggableManager(blank=True)
     code = models.CharField(max_length = 255, blank = True)
 
 class Notification(models.Model):
     type = models.IntegerField(choices=NOTIFICATION_TYPES)
     sent = models.DateField(auto_now_add=True, blank=True, null=True)
-    request = models.ForeignKey(Request, null=True, blank=True)
+    request = models.ForeignKey(Request, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     def __unicode__(self):
         return '%s:%s' % (self.type, self.get_type_name)
@@ -758,7 +757,7 @@ class Event(models.Model):
         (2, 'Deadline'),
         (3, 'Response')
     )
-    request = models.ForeignKey(Request)
+    request = models.ForeignKey(Request, on_delete=models.DO_NOTHING)
     type = models.IntegerField(choices=EVENT_CHOICES)
     name = models.CharField(max_length=255)
     date = models.DateField(blank=True, null=True)
